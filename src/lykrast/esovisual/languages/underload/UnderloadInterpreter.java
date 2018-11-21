@@ -1,7 +1,8 @@
 package lykrast.esovisual.languages.underload;
 
 import java.io.PrintStream;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
@@ -21,7 +22,7 @@ public class UnderloadInterpreter implements Interpreter {
 		EVAL = '^', 
 		OUTPUT = 'S';
 	
-	private Stack<String> stack;
+	private Deque<String> stack;
 	private StringBuilder program;
 	private PrintStream stdout;
 	private int instructionPointer;
@@ -34,7 +35,7 @@ public class UnderloadInterpreter implements Interpreter {
 
 	@Override
 	public void interpret(String source, String input, PrintStream output) {
-		stack = new Stack<>();
+		stack = new ArrayDeque<>();
 		program = new StringBuilder(source);
 		instructionPointer = 0;
 		

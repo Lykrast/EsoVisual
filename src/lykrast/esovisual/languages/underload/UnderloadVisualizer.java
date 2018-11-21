@@ -5,7 +5,9 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Iterator;
 
 import javax.swing.JLabel;
 
@@ -14,7 +16,7 @@ import lykrast.esovisual.core.ui.StringReaderDisplayer;
 public class UnderloadVisualizer extends JLabel {
 	private static final long serialVersionUID = 7169832245163409582L;
 	
-	private Stack<String> stack;
+	private Deque<String> stack;
 	private StringReaderDisplayer program;
 	
 	private Dimension size;
@@ -22,10 +24,10 @@ public class UnderloadVisualizer extends JLabel {
 	public UnderloadVisualizer() {
 		size = new Dimension(0, 0);
 		program = new StringReaderDisplayer();
-		init(new Stack<>(), "");
+		init(new ArrayDeque<>(), "");
 	}
 	
-	public void init(Stack<String> stack, String program) {
+	public void init(Deque<String> stack, String program) {
 		this.stack = stack;
 		this.program.setString(program).setPointer(0);
 		revalidate();
@@ -65,8 +67,9 @@ public class UnderloadVisualizer extends JLabel {
 		//Stack
 		g.setColor(Color.BLACK);
 		int totalWidth = 0, lastWidth = 0;
-		for (int i = 0; i < stack.size(); i++) {
-			String s = stack.get(i);
+		Iterator<String> it = stack.descendingIterator();
+		while (it.hasNext()) {
+			String s = it.next();
 			int width = font.stringWidth(s) + padding;
 			
 			g.drawRect(totalWidth, 0, width, height);
